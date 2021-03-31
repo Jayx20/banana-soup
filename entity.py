@@ -10,6 +10,3 @@ class Entity:
         self.sprite = Sprite(sprite_name)
         self.pos = Vector2(x, y)
         print("Sprite has been created with the name: " + sprite_name)
-
-    def move(x: int, y: int):
-        self.pos = Vector2(x,y)
