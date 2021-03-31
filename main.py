@@ -10,20 +10,23 @@ FPS = 120
 pygame.display.set_caption("Banana Soup")
 
 # GLOBAL definitions
-FILL_COLOR = (200, 200, 255)
-entities: List[Entity] = []
-test_entity: Entity
-sprint: int
-prUpdate: bool
-myfont: pygame.font
-money: int = 0
-distanceX: int
-distanceY: int
+FILL_COLOR = (200, 200, 255) #  Background color
+entities: List[Entity] = [] # List of active entities
+blobNumber: int # Depricated
+test_entity: Entity # Test entity (The guy you use to walk around)
+sprint: int # Sprint
+prUpdate: bool # Print Rate Update //Depricated
+myfont: pygame.font # Fontz
+money: int = 0 # Money or blob value
+distanceX: int # Blob distance x
+distanceY: int # Blob distance y
+halfTick: int #Half tick of game clock (Runs something every half tick)
 # runs once at the start of the game
 def init():
-    global test_entity, blob, money, myfont
-
+    global test_entity, blob, money, myfont, blobNumber, halfTick
+    halfTick = 0
     money = 0
+    blobNumber = 0
     blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
     entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
@@ -33,15 +36,14 @@ def init():
 
 # runs every frame - game logic
 def update():
-    global test_entity, blob, money
-    distanceX = test_entity.pos.x - blob.pos.x
-    distanceY = test_entity.pos.y - blob.pos.y
-    sprint = 1
+    global test_entity, blob, money, blobNumber
+    
     prUpdate = False
     # input stuff, move later to ma
     keys = pygame.key.get_pressed()
+    sprint = 1
     if keys[pygame.K_LSHIFT]:
-        sprint = 2
+        sprint += 1
     if keys[pygame.K_a]:
         test_entity.pos.x -= 1 * sprint
         prUpdate = True
@@ -58,9 +60,12 @@ def update():
          print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y))
          prUpdate = False
 
+    # Teleport test entity to blob
     if keys[pygame.K_g]:
         test_entity.pos = blob.pos
-    #Pickup Blob
+    # Pickup Blob
+    distanceX = test_entity.pos.x - blob.pos.x
+    distanceY = test_entity.pos.y - blob.pos.y
     if abs(distanceX) < 20:
         if abs(distanceY) < 20:
          money += 1
@@ -84,13 +89,15 @@ def draw():
 
 
 def main():
+    global halfTick
     init()
     clock = pygame.time.Clock()
     run = True
     # game loop
     while run:
         clock.tick(FPS)
-        # go through each event (user input)
+        
+             # go through each event (user input)
         for event in pygame.event.get():
             # if user try to quit, close game
             if event.type == pygame.QUIT:
