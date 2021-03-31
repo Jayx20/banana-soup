@@ -29,9 +29,6 @@ def init():
     entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
-    # create joe and add him to the game like an epic boss
-    joe = Entity("goodsprite.png", 10, 10)
-    entities.append(joe)
 
 # runs every frame - game logic
 def update():
