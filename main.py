@@ -6,7 +6,7 @@ import entity
 import random
 WIDTH, HEIGHT = 1280, 720
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-FPS = 60
+FPS = 120
 pygame.display.set_caption("Banana Soup")
 
 # GLOBAL definitions
@@ -29,6 +29,9 @@ def init():
     entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
+    pygame.font.init()
+    global myfont
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 # runs every frame - game logic
 def update():
@@ -42,7 +45,7 @@ def update():
     # input stuff, move later to ma
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LSHIFT]:
-        sprint += 2
+        sprint = 2
     if keys[pygame.K_a]:
         test_entity.pos.x -= 1 * sprint
         prUpdate = True
@@ -59,6 +62,8 @@ def update():
          print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y))
          prUpdate = False
 
+    if keys[pygame.K_g]:
+        test_entity.pos = blob.pos
     #Pickup Blob
     if abs(distanceX) < 20:
         if abs(distanceY) < 20:
@@ -74,10 +79,9 @@ def draw():
 
     for entity in entities:
         WINDOW.blit(entity.sprite.img, entity.pos, entity.sprite.rect)
-        pygame.font.init()
-        myfont = pygame.font.SysFont('Comic Sans MS', 30)
-        textsurface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
-        WINDOW.blit(textsurface,(700,0))
+    global myfont
+    textsurface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
+    WINDOW.blit(textsurface,(1080,0))
 
     # finish drawing
     pygame.display.update()
@@ -89,7 +93,7 @@ def main():
     run = True
     # game loop
     while run:
-        clock.tick(60)
+        clock.tick(FPS)
         # go through each event (user input)
         for event in pygame.event.get():
             # if user try to quit, close game
