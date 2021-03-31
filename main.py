@@ -17,8 +17,12 @@ test_entity: Entity
 # runs once at the start of the game
 def init():
     global test_entity
-    test_entity = Entity()
+    test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
+
+    # create joe and add him to the game like an epic boss
+    joe = Entity("goodsprite.png", 10, 10)
+    entities.append(joe)
 
 
 # runs every frame - game logic
@@ -48,7 +52,6 @@ def draw():
 
     # finish drawing
     pygame.display.update()
-
 
 
 def main():

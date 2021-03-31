@@ -6,7 +6,6 @@ class Entity:
     sprite: Sprite
     pos: Vector2
 
-    # temporary test constructor
-    def __init__(self):
-        self.sprite = Sprite('goodsprite.png')
-        self.pos = Vector2(0, 0)
+    def __init__(self, sprite_name: str, x: int, y: int):
+        self.sprite = Sprite(sprite_name)
+        self.pos = Vector2(x, y)
