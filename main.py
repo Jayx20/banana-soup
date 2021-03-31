@@ -1,8 +1,7 @@
 import pygame
 from typing import List
-
 from entity import Entity
-
+from pygame import Vector2
 WIDTH, HEIGHT = 1280, 720
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 FPS = 60
@@ -12,8 +11,8 @@ pygame.display.set_caption("Banana Soup")
 FILL_COLOR = (200, 200, 255)
 entities: List[Entity] = []
 test_entity: Entity
-
-
+sprint: int
+prUpdate: bool
 # runs once at the start of the game
 def init():
     global test_entity
@@ -24,24 +23,30 @@ def init():
     joe = Entity("goodsprite.png", 10, 10)
     entities.append(joe)
 
-
 # runs every frame - game logic
 def update():
     global test_entity
-    print('test entity pos is '+str(test_entity.pos))
-
-    # input stuff, move later to make this less terrible / in the way
+    sprint = 1
+    prUpdate = False
+    # input stuff, move later to ma
     keys = pygame.key.get_pressed()
+    if keys[pygame.K_LSHIFT]:
+        sprint += 2
     if keys[pygame.K_a]:
-        test_entity.pos.x -= 1
+        test_entity.pos.x -= 1 * sprint
+        prUpdate = True
     if keys[pygame.K_d]:
-        test_entity.pos.x += 1
+        test_entity.pos.x += 1 * sprint
+        prUpdate = True
     if keys[pygame.K_w]:
-        test_entity.pos.y -= 1
+        test_entity.pos.y -= 1 * sprint
+        prUpdate = True
     if keys[pygame.K_s]:
-        test_entity.pos.y += 1
-
-
+        test_entity.pos.y += 1 * sprint
+        prUpdate = True
+    if prUpdate:
+         print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y))
+         prUpdate = False
 # runs every frame - graphics
 def draw():
     WINDOW.fill(FILL_COLOR)
@@ -70,8 +75,6 @@ def main():
         draw()
 
     pygame.quit()
-
-
 # stupid python syntax for running main only from main.py
 if __name__ == "__main__":
     main()
