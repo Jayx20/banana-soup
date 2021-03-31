@@ -21,23 +21,19 @@ distanceX: int
 distanceY: int
 # runs once at the start of the game
 def init():
-    global test_entity
-    global money
-    global blob
+    global test_entity, blob, money, myfont
+
     money = 0
     blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
     entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
     pygame.font.init()
-    global myfont
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 # runs every frame - game logic
 def update():
-    global test_entity
-    global blob
-    global money
+    global test_entity, blob, money
     distanceX = test_entity.pos.x - blob.pos.x
     distanceY = test_entity.pos.y - blob.pos.y
     sprint = 1
