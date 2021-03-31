@@ -2,6 +2,8 @@ import pygame
 from typing import List
 from entity import Entity
 from pygame import Vector2
+import entity
+import random
 WIDTH, HEIGHT = 1280, 720
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 FPS = 60
@@ -13,12 +15,20 @@ entities: List[Entity] = []
 test_entity: Entity
 sprint: int
 prUpdate: bool
+myfont: pygame.font
+money: int = 0
+distanceX: int
+distanceY: int
 # runs once at the start of the game
 def init():
     global test_entity
+    global money
+    global blob
+    money = 0
+    blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
+    entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
-
     # create joe and add him to the game like an epic boss
     joe = Entity("goodsprite.png", 10, 10)
     entities.append(joe)
@@ -26,6 +36,10 @@ def init():
 # runs every frame - game logic
 def update():
     global test_entity
+    global blob
+    global money
+    distanceX = test_entity.pos.x - blob.pos.x
+    distanceY = test_entity.pos.y - blob.pos.y
     sprint = 1
     prUpdate = False
     # input stuff, move later to ma
@@ -47,6 +61,15 @@ def update():
     if prUpdate:
          print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y))
          prUpdate = False
+
+    #Pickup Blob
+    if abs(distanceX) < 10:
+        if abs(distanceY) < 10:
+         money += 1
+         for x in entities:
+            if x == blob:
+             blob.pos = Vector2(random.randint(40,1240), random.randint(40,680))
+
 # runs every frame - graphics
 def draw():
     WINDOW.fill(FILL_COLOR)
@@ -54,6 +77,10 @@ def draw():
 
     for entity in entities:
         WINDOW.blit(entity.sprite.img, entity.pos, entity.sprite.rect)
+        pygame.font.init()
+        myfont = pygame.font.SysFont('Comic Sans MS', 30)
+        textsurface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
+        WINDOW.blit(textsurface,(700,0))
 
     # finish drawing
     pygame.display.update()
