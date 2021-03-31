@@ -26,7 +26,7 @@ def init():
     global blob
     money = 0
     blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
-
+    entities.append(blob)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
     # create joe and add him to the game like an epic boss
