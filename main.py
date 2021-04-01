@@ -27,9 +27,7 @@ eh: EntityHandler
 def init():
     global test_entity, blob, money, myfont, blobNumber, halfTick, eh
     eh = EntityHandler()
-    halfTick = 0
     money = 0
-    blobNumber = 0
     eh.multiAdd("blob.png", 10)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
@@ -38,7 +36,7 @@ def init():
 
 # runs every frame - game logic
 def update():
-    global test_entity, blob, money, blobNumber
+    global test_entity, money, blobNumber
     
     prUpdate = False
     # input stuff, move later to ma
@@ -68,7 +66,7 @@ def update():
         if abs(distanceX) < 20:
             if abs(distanceY) < 20:
                 money += 1
-                entity.pos = Vector2(random.randint(40,1240), random.randint(40,680))
+                eh.position(entity, Vector2(random.randint(40,1240), random.randint(40,680)))
 
 # runs every frame - graphics
 def draw():

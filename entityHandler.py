@@ -12,11 +12,10 @@ class EntityHandler:
         self.entityList = []
         self.entityList.append(newEntity)
         print(newEntity.pos)
-    def position(self, entity: Entity, x: int, y: int):
-        entityList = self.entityList
-        for e in entityList:
+    def position(self, entity: Entity, pos: Vector2):
+        for e in self.entityList:
             if(e == entity):
-                e.pos = Vector2(x,y)
+                e.pos = pos
     def multiAdd(self, image: str, amount: int):
         self.entityList = []
         for x in range(amount):
