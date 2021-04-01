@@ -4,6 +4,7 @@ from entity import Entity
 from pygame import Vector2
 import entity
 import random
+from entityHandler import EntityHandler
 WIDTH, HEIGHT = 1280, 720
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 FPS = 120
@@ -12,7 +13,6 @@ pygame.display.set_caption("Banana Soup")
 # GLOBAL definitions
 FILL_COLOR = (200, 200, 255) #  Background color
 entities: List[Entity] = [] # List of active entities\
-blobs: List[Entity] = []
 blobNumber: int # Depricated
 test_entity: Entity # Test entity (The guy you use to walk around)
 sprint: int # Sprint
@@ -22,18 +22,15 @@ money: int = 0 # Money or blob value
 distanceX: int # Blob distance x
 distanceY: int # Blob distance y
 halfTick: int #Half tick of game clock (Runs something every half tick)
+eh: EntityHandler
 # runs once at the start of the game
 def init():
-    global test_entity, blob, money, myfont, blobNumber, halfTick
+    global test_entity, blob, money, myfont, blobNumber, halfTick, eh
+    eh = EntityHandler()
     halfTick = 0
     money = 0
     blobNumber = 0
-    blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
-    blob2 = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
-    entities.append(blob)
-    entities.append(blob2)
-    blobs.append(blob)
-    blobs.append(blob2)
+    eh.multiAdd("blob.png", 10)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
     pygame.font.init()
@@ -62,14 +59,10 @@ def update():
         test_entity.pos.y += 1 * sprint
         prUpdate = True
     if prUpdate:
-         print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y))
+         print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y), 1)
          prUpdate = False
-
-    # Teleport test entity to blob
-    if keys[pygame.K_g]:
-        test_entity.pos = blob.pos
     # Pickup Blob
-    for entity in blobs:
+    for entity in eh.entityList:
         distanceX = test_entity.pos.x - entity.pos.x
         distanceY = test_entity.pos.y - entity.pos.y
         if abs(distanceX) < 20:
@@ -81,8 +74,9 @@ def update():
 def draw():
     WINDOW.fill(FILL_COLOR)
     # start drawing
-
     for entity in entities:
+        WINDOW.blit(entity.sprite.img, entity.pos, entity.sprite.rect)
+    for entity in eh.entityList:
         WINDOW.blit(entity.sprite.img, entity.pos, entity.sprite.rect)
     global myfont
     textsurface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
