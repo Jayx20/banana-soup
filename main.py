@@ -11,7 +11,8 @@ pygame.display.set_caption("Banana Soup")
 
 # GLOBAL definitions
 FILL_COLOR = (200, 200, 255) #  Background color
-entities: List[Entity] = [] # List of active entities
+entities: List[Entity] = [] # List of active entities\
+blobs: List[Entity] = []
 blobNumber: int # Depricated
 test_entity: Entity # Test entity (The guy you use to walk around)
 sprint: int # Sprint
@@ -28,7 +29,11 @@ def init():
     money = 0
     blobNumber = 0
     blob = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
+    blob2 = Entity("blob.png", random.randint(40,1240), random.randint(40,680))
     entities.append(blob)
+    entities.append(blob2)
+    blobs.append(blob)
+    blobs.append(blob2)
     test_entity = Entity("goodsprite.png", 5, 5)
     entities.append(test_entity)
     pygame.font.init()
@@ -64,14 +69,13 @@ def update():
     if keys[pygame.K_g]:
         test_entity.pos = blob.pos
     # Pickup Blob
-    distanceX = test_entity.pos.x - blob.pos.x
-    distanceY = test_entity.pos.y - blob.pos.y
-    if abs(distanceX) < 20:
-        if abs(distanceY) < 20:
-         money += 1
-         for x in entities:
-            if x == blob:
-             blob.pos = Vector2(random.randint(40,1240), random.randint(40,680))
+    for entity in blobs:
+        distanceX = test_entity.pos.x - entity.pos.x
+        distanceY = test_entity.pos.y - entity.pos.y
+        if abs(distanceX) < 20:
+            if abs(distanceY) < 20:
+                money += 1
+                entity.pos = Vector2(random.randint(40,1240), random.randint(40,680))
 
 # runs every frame - graphics
 def draw():
