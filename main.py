@@ -1,54 +1,82 @@
 import pygame
-from typing import List
-
 from entity import Entity
+from pygame import Vector2
+import random
+from entityHandler import EntityHandler
 
+# Constants / Pygame stuff
 WIDTH, HEIGHT = 1280, 720
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
-FPS = 60
+FPS = 120
 pygame.display.set_caption("Banana Soup")
 
 # GLOBAL definitions
-FILL_COLOR = (200, 200, 255)
-entities: List[Entity] = []
-test_entity: Entity
+FILL_COLOR = (200, 200, 255)  # Background color
+myfont: pygame.font  # Fontz
+entities: EntityHandler  # List of active entities
+test_entity: Entity  # Test entity (The guy you use to walk around)
+sprint: int  # Sprint
+money: int = 0  # Money or blob value
 
 
 # runs once at the start of the game
 def init():
-    global test_entity
-    test_entity = Entity("goodsprite.png", 5, 5)
-    entities.append(test_entity)
-
-    # create joe and add him to the game like an epic boss
-    joe = Entity("goodsprite.png", 10, 10)
-    entities.append(joe)
+    global test_entity, money, myfont, entities
+    entities = EntityHandler()
+    money = 0
+    entities.multi_add("blob.png", 10)
+    test_entity = entities.add("goodsprite.png", 5, 5)
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
 
 # runs every frame - game logic
 def update():
-    global test_entity
-    print('test entity pos is '+str(test_entity.pos))
+    global test_entity, money, sprint
 
-    # input stuff, move later to make this less terrible / in the way
+    # input stuff, move later to ma
     keys = pygame.key.get_pressed()
+    sprint = 1
+    pr_update = False
+    if keys[pygame.K_LSHIFT]:
+        sprint += 1
     if keys[pygame.K_a]:
-        test_entity.pos.x -= 1
+        test_entity.pos.x -= 1 * sprint
+        pr_update = True
     if keys[pygame.K_d]:
-        test_entity.pos.x += 1
+        test_entity.pos.x += 1 * sprint
+        pr_update = True
     if keys[pygame.K_w]:
-        test_entity.pos.y -= 1
+        test_entity.pos.y -= 1 * sprint
+        pr_update = True
     if keys[pygame.K_s]:
-        test_entity.pos.y += 1
+        test_entity.pos.y += 1 * sprint
+        pr_update = True
+    if pr_update:
+        print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y), 1)
+
+    # Pickup Blob
+    for entity in entities.entityList:
+        # TODO: make better way to check if blob
+        if entity != test_entity:  # if blob
+            distance_x = test_entity.pos.x - entity.pos.x
+            distance_y = test_entity.pos.y - entity.pos.y
+            if abs(distance_x) < 20:
+                if abs(distance_y) < 20:
+                    money += 1
+                    entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
 
 
 # runs every frame - graphics
 def draw():
     WINDOW.fill(FILL_COLOR)
     # start drawing
-
-    for entity in entities:
+    for entity in entities.entityList:
         WINDOW.blit(entity.sprite.img, entity.pos, entity.sprite.rect)
+
+    # draw money thing
+    text_surface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
+    WINDOW.blit(text_surface, (1080, 0))
 
     # finish drawing
     pygame.display.update()
@@ -60,7 +88,8 @@ def main():
     run = True
     # game loop
     while run:
-        clock.tick(60)
+        clock.tick(FPS)
+        
         # go through each event (user input)
         for event in pygame.event.get():
             # if user try to quit, close game
