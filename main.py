@@ -5,6 +5,7 @@ import random
 from handlers.entityHandler import EntityHandler
 from handlers.inputHandler import InputHandler
 from handlers.logHandler import LogHandler
+from player import Player
 
 # Constants / Pygame stuff
 WIDTH, HEIGHT = 1280, 720
@@ -16,7 +17,7 @@ pygame.display.set_caption("Banana Soup")
 FILL_COLOR = (200, 200, 255)  # Background color
 myfont: pygame.font  # Fontz
 entities: EntityHandler  # List of active entities
-test_entity: Entity  # Test entity (The guy you use to walk around)
+test_entity: Player  # Test entity (The guy you use to walk around)
 input: InputHandler
 log: LogHandler
 sprint: int  # Sprint
@@ -30,8 +31,8 @@ def init():
     entities = EntityHandler()
     input = InputHandler()
     money = 0
-    entities.multi_add("blob.png", 10)
-    test_entity = entities.add("goodsprite.png", 5, 5)
+    entities.multi_add("blob.png", 100)
+    test_entity = entities.add_player("goodsprite.png", 5, 5)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -48,10 +49,10 @@ def update():
 
     # Pickup Blob
     for entity in entities.entityList:
-        # TODO: make better way to check if blob
-        if entity != test_entity:  # if blob
-            distance_x = test_entity.pos.x - entity.pos.x
-            distance_y = test_entity.pos.y - entity.pos.y
+        # Make sure not player
+        if not isinstance(entity, Player) :
+            distance_x = test_entity.pos.x - entity.pos.x # Get x to compare later
+            distance_y = test_entity.pos.y - entity.pos.y # Get y to compare later
             if abs(distance_x) < 20:
                 if abs(distance_y) < 20:
                     money += 1
@@ -67,11 +68,10 @@ def draw():
 
     # draw money thing
     text_surface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
-    WINDOW.blit(text_surface, (1080, 0))
+    WINDOW.blit(text_surface, (WIDTH - 120, HEIGHT - HEIGHT))
 
     # finish drawing
     pygame.display.update()
-
 
 def main():
     init()
@@ -88,11 +88,9 @@ def main():
                 run = False
         update()
         draw()
-
     pygame.quit()
 
 
 # stupid python syntax for running main only from main.py
 if __name__ == "__main__":
     main()
-
