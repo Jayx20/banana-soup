@@ -68,7 +68,7 @@ def draw():
 
     # draw money thing
     text_surface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
-    WINDOW.blit(text_surface, (WIDTH - 120, HEIGHT - HEIGHT))
+    WINDOW.blit(text_surface, (WIDTH - 220, 0))
 
     # finish drawing
     pygame.display.update()
