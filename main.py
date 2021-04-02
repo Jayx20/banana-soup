@@ -2,8 +2,9 @@ import pygame
 from entity import Entity
 from pygame import Vector2
 import random
-from entityHandler import EntityHandler
-from inputHandler import InputHandler
+from handlers.entityHandler import EntityHandler
+from handlers.inputHandler import InputHandler
+from handlers.logHandler import LogHandler
 
 # Constants / Pygame stuff
 WIDTH, HEIGHT = 1280, 720
@@ -17,13 +18,15 @@ myfont: pygame.font  # Fontz
 entities: EntityHandler  # List of active entities
 test_entity: Entity  # Test entity (The guy you use to walk around)
 input: InputHandler
+log: LogHandler
 sprint: int  # Sprint
 money: int = 0  # Money or blob value
 
 
 # runs once at the start of the game
 def init():
-    global test_entity, money, myfont, entities, input
+    global test_entity, money, myfont, entities, input, log
+    log = LogHandler.log
     entities = EntityHandler()
     input = InputHandler()
     money = 0
@@ -35,13 +38,13 @@ def init():
 
 # runs every frame - game logic
 def update():
-    global test_entity, money, sprint
+    global test_entity, money, sprint, LogHandler
 
     player_movement = input.get_player_movement()
     if (player_movement.x != 0 or player_movement.y != 0):
         test_entity.pos += player_movement
         # print player position, for debugging
-        print("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y), 1)
+        log("Sprite's x: " + str(test_entity.pos.x) + " Sprite's y: " + str(test_entity.pos.y),2)
 
     # Pickup Blob
     for entity in entities.entityList:
