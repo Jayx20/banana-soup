@@ -51,6 +51,10 @@ def update():
             distance_y = test_entity.pos.y - entity.pos.y
             if abs(distance_x) < 20:
                 if abs(distance_y) < 20:
+                    randnum = random.randint(1,100)
+                    if randnum > 90:
+                        money = 20
+
                     money += 1
                     entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
 
