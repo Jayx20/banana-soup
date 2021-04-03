@@ -26,6 +26,7 @@ money: int = 0  # Money or blob value
 
 # runs once at the start of the game
 def init():
+    LogHandler.init()
     global test_entity, money, myfont, entities, input, log
     log = LogHandler.log
     entities = EntityHandler()
@@ -88,6 +89,7 @@ def main():
                 run = False
         update()
         draw()
+    LogHandler.close()
     pygame.quit()
 
 

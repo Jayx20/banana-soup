@@ -10,4 +10,4 @@ class Entity:
     def __init__(self, sprite_name: str, x: int, y: int):
         self.sprite = Sprite(sprite_name)
         self.pos = Vector2(x, y)
-        LogHandler.log(self.pos,2)
+        LogHandler.log("Entity: " + sprite_name + " has been created with the position of: " + str(self.pos), 1)
