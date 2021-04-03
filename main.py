@@ -52,6 +52,8 @@ def update():
             if abs(distance_x) < 20:
                 if abs(distance_y) < 20:
                     money += 1
+                    if money == 21:
+                        text_surface = myfont.render("WHATS 9 + 10!??!?!"(0, 1, 0))
                     entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
 
 
