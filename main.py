@@ -50,7 +50,7 @@ def update():
     # Pickup Blob
     for entity in entities.entityList:
         # Make sure not player
-        if not isinstance(entity, Player) :
+        if entity != test_entity:
             distance_x = test_entity.pos.x - entity.pos.x # Get x to compare later
             distance_y = test_entity.pos.y - entity.pos.y # Get y to compare later
             if abs(distance_x) < 20:
