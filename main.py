@@ -31,8 +31,8 @@ def init():
     entities = EntityHandler()
     input = InputHandler()
     money = 0
-    entities.multi_add("blob.png", 100)
-    test_entity = entities.add_player("goodsprite.png", 5, 5)
+    entities.multi_add("blob.png", 10)
+    test_entity = entities.add("tiddies.png", 5, 5)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -55,6 +55,10 @@ def update():
             distance_y = test_entity.pos.y - entity.pos.y # Get y to compare later
             if abs(distance_x) < 20:
                 if abs(distance_y) < 20:
+                    randnum = random.randint(1,100)
+                    if randnum > 90:
+                        money = 20
+
                     money += 1
                     entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
 
@@ -69,6 +73,10 @@ def draw():
     # draw money thing
     text_surface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
     WINDOW.blit(text_surface, (WIDTH - 220, 0))
+
+    if money == 21:
+        text_surface = myfont.render("WHATS 9 + 10!??!?! " + str(money), False, (0, 0, 0))
+        WINDOW.blit(text_surface, (69,69))
 
     # finish drawing
     pygame.display.update()
