@@ -28,7 +28,7 @@ def init():
     input = InputHandler()
     money = 0
     entities.multi_add("blob.png", 10)
-    test_entity = entities.add("goodsprite.png", 5, 5)
+    test_entity = entities.add("tiddies.jfif", 5, 5)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
