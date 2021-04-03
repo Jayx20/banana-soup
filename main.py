@@ -28,7 +28,7 @@ def init():
     input = InputHandler()
     money = 0
     entities.multi_add("blob.png", 10)
-    test_entity = entities.add("goodsprite.png", 5, 5)
+    test_entity = entities.add("tiddies.png", 5, 5)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
@@ -65,7 +65,9 @@ def draw():
     # draw money thing
     text_surface = myfont.render("Blobs: " + str(money), False, (0, 0, 0))
     WINDOW.blit(text_surface, (1080, 0))
-
+    if money == 21:
+        text_surface = myfont.render("WHATS 9 + 10!??!?! " + str(money), False, (0, 0, 0))
+        WINDOW.blit(text_surface, (69,69))
     # finish drawing
     pygame.display.update()
 
