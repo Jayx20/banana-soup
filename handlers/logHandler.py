@@ -8,7 +8,7 @@ class LogHandler():
     def log(log: str, logLevel: int):
         if logLevel == 1:
             file = open("log.txt", "a")
-            file.write(log)
+            file.write(str(log))
             file.close
             print(log)
         if logLevel == 2:
