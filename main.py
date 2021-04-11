@@ -32,10 +32,9 @@ def init():
     input = InputHandler()
     money = 0
     entities.multi_add("blob.png", 10)
-    test_entity = entities.add("tiddies.png", 5, 5)
+    test_entity = entities.add_player("tiddies.png", 5, 5)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
-
 
 # runs every frame - game logic
 def update():
@@ -50,17 +49,15 @@ def update():
     # Pickup Blob
     for entity in entities.entityList:
         # Make sure not player
-        if entity != test_entity:
+        if not isinstance(entity,Player):
             distance_x = test_entity.pos.x - entity.pos.x # Get x to compare later
             distance_y = test_entity.pos.y - entity.pos.y # Get y to compare later
-            if abs(distance_x) < 20:
-                if abs(distance_y) < 20:
-                    randnum = random.randint(1,100)
-                    if randnum > 90:
-                        money = 20
-
-                    money += 1
-                    entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
+            if abs(distance_x) < 20 and abs(distance_y) < 20:
+                randnum = random.randint(1,100)
+                if randnum > 90:
+                    money = 20
+                money += 1
+                entity.pos = Vector2(random.randint(40, 1240), random.randint(40, 680))
 
 
 # runs every frame - graphics
